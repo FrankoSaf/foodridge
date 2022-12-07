@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import FoodContext from '../../store/FoodContext';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 const HomeForm = () => {
   const {
     setIngredients,
@@ -9,6 +10,9 @@ const HomeForm = () => {
     onChangeHandler,
     addIngredientHandler,
     errorMessage,
+    searchIngredient,
+    setIngredient,
+    setSearchIngredient,
   } = useContext(FoodContext);
   return (
     <FormContainer>
@@ -18,14 +22,32 @@ const HomeForm = () => {
           <p>Create delicious meals from ingredients in your fridge</p>
         </div>
         {errorMessage && <p className='error_message'>{errorMessage}</p>}
-        <input
-          type='text'
-          name='ingredients'
-          id='ingredients'
-          value={ingredient}
-          onChange={(e) => onChangeHandler(e)}
-          placeholder='Add ingredient one by one'
-        />
+        <div style={{ position: 'relative' }}>
+          <input
+            type='text'
+            name='ingredients'
+            id='ingredients'
+            value={ingredient}
+            onChange={(e) => onChangeHandler(e)}
+            placeholder='Add ingredient one by one'
+            autoComplete='off'
+          />
+          {searchIngredient.open && (
+            <ul className='search-list'>
+              {searchIngredient.list.map((item) => (
+                <li
+                  key={uuidv4()}
+                  onClick={() => {
+                    setIngredient(item.ingredient);
+                    setSearchIngredient({ list: [], open: false });
+                  }}
+                >
+                  {item.ingredient}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
         <input type='submit' value='Add' />
       </form>
     </FormContainer>
@@ -43,6 +65,20 @@ const FormContainer = styled.div`
   margin: 0 auto;
 
   form {
+    .search-list {
+      max-height: 20rem;
+      overflow-y: scroll;
+      background-color: white;
+      position: absolute;
+      right: 0;
+      left: 0;
+      &::-webkit-scrollbar {
+        width: 5px;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: grey;
+      }
+    }
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -50,8 +86,7 @@ const FormContainer = styled.div`
       width: 30rem;
       height: 4rem;
       outline: none;
-      border-radius: 10px;
-      border: none;
+      border: black 1px solid;
       &:focus {
         border: #f0d0b2 5px solid;
       }

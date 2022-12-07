@@ -1,10 +1,35 @@
 import React, { useContext } from 'react';
 import FoodContext from '../../store/FoodContext';
 import styled from 'styled-components';
+import axios from 'axios';
+import { recipesData } from '../../assets/recipes';
 import { v4 as uuidv4 } from 'uuid';
+import { NavLink } from 'react-router-dom';
 const IngredientsList = () => {
-  const { ingredients, removeIngredientHandler } = useContext(FoodContext);
-  console.log(ingredients.length);
+  const { ingredients, removeIngredientHandler, setRecipes, recipes } =
+    useContext(FoodContext);
+  const findRecipesHandler = () => {
+    // try {
+    //   const data = await axios.get(
+    //     `https://api.spoonacular.com/recipes/findByIngredients?apiKey=83fb69b6993c41ea9203d4ef573034d2&&ingredients=${arr.join(
+    //       ','
+    //     )}&number=100`
+    //   );
+
+    let recipesArr = recipesData.filter(
+      (recipe) => recipe.missedIngredientCount === 0
+    );
+    if (recipesArr.length === 0) {
+      recipesArr = recipesData.filter(
+        (recipe) => recipe.missedIngredientCount <= 3
+      );
+    }
+    setRecipes(recipesArr.sort((recipe) => recipe.missedIngredientCount));
+    // } catch (err) {
+    //   console.log(err);
+    // }
+  };
+
   return (
     <ListOfIngredients
       className={ingredients.length > 0 ? 'ingredients_list-visible ' : ''}
@@ -17,7 +42,13 @@ const IngredientsList = () => {
           </div>
         </li>
       ))}
-      <button className='ingredient_list-button'>Find recipes</button>
+      <NavLink
+        to='/recipes'
+        className='ingredient_list-a'
+        onClick={findRecipesHandler}
+      >
+        Find recipes
+      </NavLink>
     </ListOfIngredients>
   );
 };
@@ -35,7 +66,7 @@ const ListOfIngredients = styled.ul`
   transition: all 0.5s ease-in-out;
   &.ingredients_list-visible {
     width: 20rem;
-    button {
+    a {
       display: inline-block;
     }
   }
@@ -58,9 +89,10 @@ const ListOfIngredients = styled.ul`
       justify-content: space-between;
     }
   }
-  .ingredient_list-button {
+  .ingredient_list-a {
     position: absolute;
     bottom: 0;
+    color: white;
     left: 50%;
     display: none;
     transform: translateX(-50%);

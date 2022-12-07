@@ -13,5 +13,13 @@
 }
 body {
   font-size: 1.6rem;
-  overflow: hidden;
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(0, 0, 0, 0.381),
+      rgba(0, 0, 0, 0.552)
+    ),
+    url('./assets/images/tamanna-rumee-cvq_8XHp2rM-unsplash.jpg') no-repeat
+      center/cover;
+  min-height: 100vh;
 }

@@ -7,7 +7,6 @@ const Home = () => {
   return (
     <>
       <HomeSection>
-
         <HomeForm />
         <IngredientsList />
       </HomeSection>
@@ -17,13 +16,8 @@ const Home = () => {
 
 export default Home;
 const HomeSection = styled.section`
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgba(0, 0, 0, 0.381),
-      rgba(0, 0, 0, 0.552)
-    ),
-    url(${backgroundImage}) no-repeat center/cover;
+  overflow: hidden;
+
   height: 100vh;
   display: flex;
 `;
