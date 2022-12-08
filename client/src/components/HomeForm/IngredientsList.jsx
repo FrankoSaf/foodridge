@@ -8,26 +8,30 @@ import { NavLink } from 'react-router-dom';
 const IngredientsList = () => {
   const { ingredients, removeIngredientHandler, setRecipes, recipes } =
     useContext(FoodContext);
-  const findRecipesHandler = () => {
-    // try {
-    //   const data = await axios.get(
-    //     `https://api.spoonacular.com/recipes/findByIngredients?apiKey=83fb69b6993c41ea9203d4ef573034d2&&ingredients=${arr.join(
-    //       ','
-    //     )}&number=100`
-    //   );
-
-    let recipesArr = recipesData.filter(
-      (recipe) => recipe.missedIngredientCount === 0
-    );
-    if (recipesArr.length === 0) {
-      recipesArr = recipesData.filter(
-        (recipe) => recipe.missedIngredientCount <= 3
+  const findRecipesHandler = async (arr) => {
+    try {
+      const data = await axios.get(
+        `https://api.spoonacular.com/recipes/findByIngredients?apiKey=83fb69b6993c41ea9203d4ef573034d2&ingredients=${arr.join(
+          ','
+        )}&number=50`
       );
+      console.log(data);
+      let recipesArr = data.data.filter(
+        (recipe) => recipe.missedIngredientCount === 0
+      );
+      if (recipesArr.length === 0) {
+        recipesArr = data.data.filter(
+          (recipe) => recipe.missedIngredientCount <= 3
+        );
+      }
+      setRecipes(
+        recipesArr.sort(
+          (a, b) => a.missedIngredientCount - b.missedIngredientCount
+        )
+      );
+    } catch (err) {
+      console.log(err);
     }
-    setRecipes(recipesArr.sort((recipe) => recipe.missedIngredientCount));
-    // } catch (err) {
-    //   console.log(err);
-    // }
   };
 
   return (
@@ -45,7 +49,7 @@ const IngredientsList = () => {
       <NavLink
         to='/recipes'
         className='ingredient_list-a'
-        onClick={findRecipesHandler}
+        onClick={() => findRecipesHandler(ingredients)}
       >
         Find recipes
       </NavLink>

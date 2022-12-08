@@ -4,11 +4,22 @@ import FoodContext from '../../store/FoodContext';
 import { BsFillEmojiHeartEyesFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 export const Recipes = () => {
-  const { recipes } = useContext(FoodContext);
+  const { recipes, recipe, getFullRecipe } = useContext(FoodContext);
   console.log(recipes);
   return (
     <section>
-      <RecipesList>
+      <RecipesList
+        style={
+          recipes.length === 1
+            ? {
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+              }
+            : {}
+        }
+      >
         {recipes.map((recipe) => (
           <li>
             <Card>
@@ -36,20 +47,31 @@ export const Recipes = () => {
                     .join(', ')}
                 </p>
                 <p>
-                  You miss:
+                  {recipe?.missedIngredientCount > 0 && 'You miss:'}
+
                   {recipe?.missedIngredients
                     .map((ingredient) => ingredient.name)
                     .join(', ')}
                 </p>
                 <p>
-                  You don't need:
+                  {recipe.unusedIngredients.length > 0 && (
+                    <span>You don't need:</span>
+                  )}
                   {recipe?.unusedIngredients
                     .map((ingredient) => ingredient.name)
                     .join(', ')}
                 </p>
               </div>
               <div className='card-footer'>
-                <NavLink to={`recipe/${recipe.id}`}>Cook me!</NavLink>
+                <NavLink
+                  onClick={() =>
+                    getFullRecipe(
+                      `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=83fb69b6993c41ea9203d4ef573034d2`
+                    )
+                  }
+                >
+                  Cook me!
+                </NavLink>
               </div>
             </Card>
           </li>

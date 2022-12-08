@@ -1,17 +1,20 @@
 import React, { createContext, useEffect, useState } from 'react';
 import { recipesData } from '../assets/recipes';
 import { fullIngredientsList } from '../assets/api/ingredients';
-
+import useLocalStorage from 'use-local-storage';
+import axios from 'axios';
 const FoodContext = createContext();
+
 export const FoodContextProvider = ({ children }) => {
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
   const [errorMessage, setErrorMessage] = useState();
-  const [recipes, setRecipes] = useState(recipesData);
+  const [recipes, setRecipes] = useLocalStorage('recipes', []);
   const [searchIngredient, setSearchIngredient] = useState({
     list: [],
     open: false,
   });
+  const [recipe, setRecipe] = useState([]);
   const arrayOfIdValues = [];
   const filterDuplicateIngredient = fullIngredientsList
     .sort((a, b) => a.ingredient.length - b.ingredient.length)
@@ -71,6 +74,14 @@ export const FoodContextProvider = ({ children }) => {
   const removeIngredientHandler = (idx) => {
     setIngredients(ingredients.filter((item, index) => index !== idx));
   };
+  const getFullRecipe = async (link) => {
+    try {
+      const data = await axios.get(link);
+      setRecipe(data.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
   return (
     <FoodContext.Provider
       value={{
@@ -86,6 +97,8 @@ export const FoodContextProvider = ({ children }) => {
         setRecipes,
         searchIngredient,
         setSearchIngredient,
+        recipe,
+        getFullRecipe,
       }}
     >
       {children}
