@@ -17,7 +17,9 @@ const Home = () => {
 export default Home;
 const HomeSection = styled.section`
   overflow: hidden;
-
-  height: 100vh;
+  flex-direction: column;
+  min-height: 100vh;
   display: flex;
+  align-items: center;
+  justify-content: center;
 `;

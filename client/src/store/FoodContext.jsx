@@ -14,7 +14,7 @@ export const FoodContextProvider = ({ children }) => {
     list: [],
     open: false,
   });
-  const [recipe, setRecipe] = useState([]);
+  const [recipe, setRecipe] = useLocalStorage('recipe', {});
   const arrayOfIdValues = [];
   const filterDuplicateIngredient = fullIngredientsList
     .sort((a, b) => a.ingredient.length - b.ingredient.length)
@@ -77,6 +77,7 @@ export const FoodContextProvider = ({ children }) => {
   const getFullRecipe = async (link) => {
     try {
       const data = await axios.get(link);
+      console.log(data.data);
       setRecipe(data.data);
     } catch (e) {
       console.error(e);

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { recipesData } from '../../assets/recipes';
 import { v4 as uuidv4 } from 'uuid';
 import { NavLink } from 'react-router-dom';
+import { RiDeleteBinLine } from 'react-icons/ri';
 const IngredientsList = () => {
   const { ingredients, removeIngredientHandler, setRecipes, recipes } =
     useContext(FoodContext);
@@ -35,70 +36,66 @@ const IngredientsList = () => {
   };
 
   return (
-    <ListOfIngredients
-      className={ingredients.length > 0 ? 'ingredients_list-visible ' : ''}
-    >
-      {ingredients.map((item, index) => (
-        <li key={uuidv4()}>
-          <div className='ingredient_list-container'>
-            <p>{item}</p>
-            <button onClick={() => removeIngredientHandler(index)}>x</button>
-          </div>
-        </li>
-      ))}
+    <ListSection>
+      <ListOfIngredients
+        className={ingredients.length > 0 ? 'ingredients_list-visible ' : ''}
+      >
+        {ingredients.map((item, index) => (
+          <li key={uuidv4()}>
+            <div className='ingredient_list-container'>
+              <p>{item}</p>
+              <RiDeleteBinLine onClick={() => removeIngredientHandler(index)} />
+            </div>
+          </li>
+        ))}
+      </ListOfIngredients>
       <NavLink
         to='/recipes'
+        style={ingredients.length < 1 ? { display: 'none' } : {}}
         className='ingredient_list-a'
         onClick={() => findRecipesHandler(ingredients)}
       >
         Find recipes
       </NavLink>
-    </ListOfIngredients>
+    </ListSection>
   );
 };
 
 export default IngredientsList;
 
-const ListOfIngredients = styled.ul`
-  background: rgba(0, 0, 0, 0.8);
-  width: 0rem;
-  height: 60rem;
-  color: white;
-  align-self: center;
-  position: relative;
-  box-shadow: -5px 0px 10px grey;
-  transition: all 0.5s ease-in-out;
-  &.ingredients_list-visible {
-    width: 20rem;
-    a {
-      display: inline-block;
-    }
-  }
-  li {
-    padding: 5px;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.8);
-    .ingredient_list-container {
-      button {
-        background: transparent;
-        color: white;
-        border: none;
-        outline: none;
-        font-size: 1.6rem;
-        cursor: pointer;
-      }
-      width: 70%;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-    }
-  }
+const ListSection = styled.section`
+  display: flex;
+  width: 40rem;
+  flex-direction: column;
+  align-items: center;
+  min-height: 35%;
   .ingredient_list-a {
-    position: absolute;
-    bottom: 0;
+    margin-top: 2rem;
+    background: #ff7000;
+    width: 14rem;
+    height: 3rem;
+    border: white 2px solid;
+    line-height: calc(3rem - 2px);
+    text-align: center;
     color: white;
-    left: 50%;
-    display: none;
-    transform: translateX(-50%);
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+`;
+
+const ListOfIngredients = styled.ul`
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10rem, 15rem));
+  gap: 5px;
+  justify-content: center;
+  .ingredient_list-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border: 2px white solid;
+    border-radius: 10px;
+    background: #10a19d;
+    color: white;
   }
 `;

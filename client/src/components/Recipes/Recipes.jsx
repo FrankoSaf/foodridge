@@ -5,7 +5,7 @@ import { BsFillEmojiHeartEyesFill } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 export const Recipes = () => {
   const { recipes, recipe, getFullRecipe } = useContext(FoodContext);
-  console.log(recipes);
+  console.log(recipe);
   return (
     <section>
       <RecipesList
@@ -64,9 +64,10 @@ export const Recipes = () => {
               </div>
               <div className='card-footer'>
                 <NavLink
+                  to={`/recipe/${recipe.title.split(' ').join('_')}`}
                   onClick={() =>
                     getFullRecipe(
-                      `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=83fb69b6993c41ea9203d4ef573034d2`
+                      `https://api.spoonacular.com/recipes/${recipe.id}/information?apiKey=83fb69b6993c41ea9203d4ef573034d2&includeNutrition=true`
                     )
                   }
                 >

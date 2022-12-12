@@ -4,8 +4,7 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 const HomeForm = () => {
   const {
-    setIngredients,
-    ingredients,
+
     ingredient,
     onChangeHandler,
     addIngredientHandler,
@@ -57,7 +56,7 @@ const HomeForm = () => {
 export default HomeForm;
 
 const FormContainer = styled.div`
-  height: 100%;
+  min-height: 65%;
   display: flex;
   justify-content: center;
   align-items: center;
