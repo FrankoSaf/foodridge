@@ -77,12 +77,14 @@ export const FoodContextProvider = ({ children }) => {
   const getFullRecipe = async (link) => {
     try {
       const data = await axios.get(link);
-      console.log(data.data);
+      scrollTo(0, 0);
       setRecipe(data.data);
     } catch (e) {
       console.error(e);
     }
   };
+  console.log(recipe);
+
   return (
     <FoodContext.Provider
       value={{
