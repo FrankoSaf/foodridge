@@ -3,8 +3,8 @@ import { recipesData } from '../assets/recipes';
 import { fullIngredientsList } from '../assets/api/ingredients';
 import useLocalStorage from 'use-local-storage';
 import axios from 'axios';
+import { useNavigation } from 'react-router-dom';
 const FoodContext = createContext();
-
 export const FoodContextProvider = ({ children }) => {
   const [ingredients, setIngredients] = useState([]);
   const [ingredient, setIngredient] = useState('');
@@ -74,16 +74,6 @@ export const FoodContextProvider = ({ children }) => {
   const removeIngredientHandler = (idx) => {
     setIngredients(ingredients.filter((item, index) => index !== idx));
   };
-  const getFullRecipe = async (link) => {
-    try {
-      const data = await axios.get(link);
-      scrollTo(0, 0);
-      setRecipe(data.data);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-  console.log(recipe);
 
   return (
     <FoodContext.Provider
@@ -101,7 +91,7 @@ export const FoodContextProvider = ({ children }) => {
         searchIngredient,
         setSearchIngredient,
         recipe,
-        getFullRecipe,
+        setRecipe,
       }}
     >
       {children}

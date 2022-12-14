@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { BsFillEmojiHeartEyesFill } from 'react-icons/bs';
 import FoodContext from '../../store/FoodContext';
-const Card = ({ item, onClick,to }) => {
-
+const Card = ({ item, getFullRecipe, to }) => {
   return (
     <CardContainer>
       <div className='card-header'>
@@ -72,12 +71,7 @@ const Card = ({ item, onClick,to }) => {
         </div>
       </div>
       <div className='card-footer'>
-        <NavLink
-          to={to}
-          onClick={onClick}
-        >
-          Cook me!
-        </NavLink>
+        <Link to={`/recipe/${item.id}`}>Cook me!</Link>
       </div>
     </CardContainer>
   );

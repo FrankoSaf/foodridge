@@ -10,14 +10,13 @@ const IngredientsList = () => {
   const { ingredients, removeIngredientHandler, setRecipes, recipes } =
     useContext(FoodContext);
   const findRecipesHandler = async (arr) => {
-
     try {
       const data = await axios.get(
         `https://api.spoonacular.com/recipes/findByIngredients?apiKey=83fb69b6993c41ea9203d4ef573034d2&ingredients=${arr.join(
           ','
         )}&number=50`
       );
-      console.log(data);
+
       let recipesArr = data.data.filter(
         (recipe) => recipe.missedIngredientCount === 0
       );
@@ -66,7 +65,7 @@ export default IngredientsList;
 
 const ListSection = styled.section`
   display: flex;
-  width: 60rem;
+  width: 100%;
   flex-direction: column;
   align-items: center;
   min-height: 35%;
@@ -85,9 +84,10 @@ const ListSection = styled.section`
 `;
 
 const ListOfIngredients = styled.ul`
-  width: 100%;
+  max-width: 50rem;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 15rem));
+
   gap: 5px;
   justify-content: center;
   .ingredient_list-container {
